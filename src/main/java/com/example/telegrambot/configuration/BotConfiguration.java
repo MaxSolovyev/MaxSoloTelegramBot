@@ -1,31 +1,21 @@
 package com.example.telegrambot.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@EnableConfigurationProperties(BotProperties.class)
 public class BotConfiguration {
-    @Value("${BotUserName}")
-    String botUserName;
 
-    @Value("${BotToken}")
-    String token;
+    @Autowired
+    BotProperties properties;
 
     public String getBotUserName() {
-        return botUserName;
+        return properties.getBotUserName();
     }
 
-    public void setBotUserName(String botUserName) {
-        this.botUserName = botUserName;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public String getBotToken() {
+        return properties.getBotToken();
     }
 }

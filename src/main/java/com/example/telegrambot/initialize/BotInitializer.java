@@ -22,7 +22,6 @@ public class BotInitializer {
             telegramBotsApi.registerBot(botService);
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
-//            log.error(exceptionStackTraceToString(e));
         }
     }
 }

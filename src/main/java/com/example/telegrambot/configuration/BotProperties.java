@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties
 public class BotProperties {
     private String botUserName;
-    private String token;
+    private String botToken;
 
     public String getBotUserName() {
         return botUserName;
@@ -15,11 +15,11 @@ public class BotProperties {
         this.botUserName = botUserName;
     }
 
-    public String getToken() {
-        return token;
+    public String getBotToken() {
+        return botToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
     }
 }

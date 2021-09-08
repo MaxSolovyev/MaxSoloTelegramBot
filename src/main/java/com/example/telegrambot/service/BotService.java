@@ -18,7 +18,6 @@ public class BotService extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
-
         update.getUpdateId();
         SendMessage.SendMessageBuilder builder = SendMessage.builder();
         String messageText;
@@ -38,10 +37,7 @@ public class BotService extends TelegramLongPollingBot {
             execute(builder.build());
         } catch (TelegramApiException e) {
             System.out.println(e.toString());
-//                log.debug(e.toString());
         }
-
-
     }
 
     public String getBotUsername() {
@@ -49,6 +45,6 @@ public class BotService extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return botConfiguration.getToken();
+        return botConfiguration.getBotToken();
     }
 }
