@@ -1,20 +1,17 @@
-package com.example.telegrambot.service;
+package com.example.telegrambot.bot;
 
-import com.example.telegrambot.configuration.BotConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Service
-public class BotService extends TelegramLongPollingBot {
-    BotConfiguration botConfiguration;
+public class BotItem extends TelegramLongPollingBot {
+    private String botName;
+    private String token;
 
-    @Autowired
-    public BotService(BotConfiguration botConfiguration) {
-        this.botConfiguration = botConfiguration;
+    public BotItem(String botName, String token) {
+        this.botName = botName;
+        this.token = token;
     }
 
     public void onUpdateReceived(Update update) {
@@ -41,10 +38,14 @@ public class BotService extends TelegramLongPollingBot {
     }
 
     public String getBotUsername() {
-        return botConfiguration.getBotUserName();
+        return botName;
     }
 
     public String getBotToken() {
-        return botConfiguration.getBotToken();
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
