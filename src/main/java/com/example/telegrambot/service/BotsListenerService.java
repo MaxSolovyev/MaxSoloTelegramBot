@@ -1,7 +1,8 @@
 package com.example.telegrambot.service;
 
-import com.example.telegrambot.bot.BotItem;
+import com.example.telegrambot.bot.AbstractBotItem;
 import com.example.telegrambot.configuration.BotConfiguration;
+import com.example.telegrambot.exceptions.BotTypeIsNotFound;
 import com.example.telegrambot.model.BotInfo;
 import com.example.telegrambot.repository.BotInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +18,32 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class BotsListenerService {
+public class BotsListenerService implements BotManagerActions {
     @Autowired
-    BotInfoRepository repository;
+    private BotInfoRepository repository;
 
     @Autowired
-    BotConfiguration configuration;
+    private BotConfiguration configuration;
 
-    private Map<String, BotSession> registeredBots = new HashMap<>();
+    private final Map<String, BotSession> registeredBots = new HashMap<>();
 
     @PostConstruct
     public void init() {
         prepare();
     }
 
-    public void prepare() {
+    private void prepare() {
         List<BotInfo> boInfoList =  repository.findAll();
         boInfoList.forEach(this::addBotForListener);
     }
 
     public void addBotForListener(BotInfo botInfo) {
         if (!registeredBots.containsKey(botInfo.getName())) {
-            TelegramLongPollingBot botItem = new BotItem(botInfo.getName(), botInfo. getToken());
             try {
+                TelegramLongPollingBot botItem = AbstractBotItem.getBotItemByType(botInfo);
                 BotSession botSession = configuration.getTelegramBotsApi().registerBot(botItem);
                 registeredBots.putIfAbsent(botItem.getBotUsername(), botSession);
-            } catch (TelegramApiException ex) {
+            } catch (BotTypeIsNotFound | TelegramApiException ex) {
                 ex.printStackTrace();
             }
         }

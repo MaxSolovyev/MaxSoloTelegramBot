@@ -1,17 +1,22 @@
 package com.example.telegrambot.model.dto;
 
+import com.example.telegrambot.utils.BotType;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BotDto {
+public class BotDto implements Serializable {
     private String name;
     private String token;
+    private BotType type;
 
     public BotDto() {
     }
 
-    public BotDto(String name, String token) {
+    public BotDto(String name, String token, BotType type) {
         this.name = name;
         this.token = token;
+        this.type = type;
     }
 
     public String getName() {
@@ -28,6 +33,15 @@ public class BotDto {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+
+    public BotType getType() {
+        return type;
+    }
+
+    public void setType(BotType type) {
+        this.type = type;
     }
 
     @Override
@@ -49,6 +63,7 @@ public class BotDto {
         return "BotDto{" +
                 "name='" + name + '\'' +
                 ", token='" + token + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

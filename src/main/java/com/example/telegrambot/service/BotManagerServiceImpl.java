@@ -13,21 +13,21 @@ import java.util.stream.Collectors;
 @Service
 public class BotManagerServiceImpl implements BotManagerService {
     private BotInfoRepository botInfoRepository;
-    private BotsListenerService botsListenerService;
+    private BotManagerActions botManagerActions;
 
     @Autowired
-    public BotManagerServiceImpl(BotInfoRepository botInfoRepository, BotsListenerService botsListenerService) {
+    public BotManagerServiceImpl(BotInfoRepository botInfoRepository, BotManagerActions botManagerActions) {
         this.botInfoRepository = botInfoRepository;
-        this.botsListenerService = botsListenerService;
+        this.botManagerActions = botManagerActions;
     }
 
     @Transactional
     @Override
-    public void register(BotDto botDto) {
-        List<BotInfo> botInfoList = botInfoRepository.findByName(botDto.getName());
+    public void register(BotInfo botInfo) {
+        List<BotInfo> botInfoList = botInfoRepository.findByName(botInfo.getName());
         if (botInfoList.isEmpty()) {
-            BotInfo botInfo = botInfoRepository.save(new BotInfo(botDto.getName(), botDto.getToken()));
-            botsListenerService.addBotForListener(botInfo);
+            botInfoRepository.save(botInfo);
+            botManagerActions.addBotForListener(botInfo);
         }
     }
 
@@ -36,8 +36,11 @@ public class BotManagerServiceImpl implements BotManagerService {
     public void unregister(String botName) {
         botInfoRepository.findByName(botName).forEach(info -> {
             botInfoRepository.delete(info);
-            botsListenerService.removeFromListener(info.getName());
+            botManagerActions.removeFromListener(info.getName());
         });
+
+        ThreadLocal<Integer> counter = new ThreadLocal<>();
+        Object obj;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class BotManagerServiceImpl implements BotManagerService {
         return botInfoRepository
                 .findAll()
                 .stream()
-                .map(info -> new BotDto(info.getName(), info.getToken()))
+                .map(info -> new BotDto(info.getName(), info.getToken(), info.getType()))
                 .collect(Collectors.toList());
     }
 }

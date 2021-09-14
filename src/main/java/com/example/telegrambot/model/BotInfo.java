@@ -1,8 +1,8 @@
 package com.example.telegrambot.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.example.telegrambot.utils.BotType;
+
+import javax.persistence.*;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -16,18 +16,23 @@ public class BotInfo {
     private String name;
     private String token;
 
+    @Enumerated(EnumType.STRING)
+    private BotType type;
+
     public BotInfo() {
     }
 
-    public BotInfo(long id, String name, String token) {
+    public BotInfo(long id, String name, String token, BotType type) {
         this.id = id;
         this.name = name;
         this.token = token;
+        this.type = type;
     }
 
-    public BotInfo(String name, String token) {
+    public BotInfo(String name, String token, BotType type) {
         this.name = name;
         this.token = token;
+        this.type = type;
     }
 
     public long getId() {
@@ -54,12 +59,21 @@ public class BotInfo {
         this.token = token;
     }
 
+    public BotType getType() {
+        return type;
+    }
+
+    public void setType(BotType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "BotInfo{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", token='" + token + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

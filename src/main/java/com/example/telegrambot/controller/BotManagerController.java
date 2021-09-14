@@ -1,6 +1,8 @@
 package com.example.telegrambot.controller;
 
+import com.example.telegrambot.model.BotInfo;
 import com.example.telegrambot.model.dto.BotDto;
+import com.example.telegrambot.model.mapper.BotInfoMapper;
 import com.example.telegrambot.service.BotManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,8 @@ public class BotManagerController {
 
     @PostMapping("/bot/register")
     public void register(@RequestBody BotDto botDto) {
-        botManagerService.register(botDto);
+        BotInfo botInfo = BotInfoMapper.instance.botDtoToBotInfo(botDto);
+        botManagerService.register(botInfo);
     }
 
     @GetMapping("/bot/unregister/{botName}")
