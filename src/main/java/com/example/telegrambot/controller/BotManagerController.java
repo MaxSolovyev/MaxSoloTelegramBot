@@ -29,5 +29,4 @@ public class BotManagerController {
     public List<BotDto> getAll() {
         return botManagerService.getAll();
     }
-
 }
