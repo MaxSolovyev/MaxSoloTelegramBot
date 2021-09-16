@@ -21,7 +21,7 @@ public class BotManagerController {
     }
 
     @GetMapping("/bot/unregister/{botName}")
-    public void register(@PathVariable String botName) {
+    public void unregister(@PathVariable String botName) {
         botManagerService.unregister(botName);
     }
 

@@ -38,9 +38,6 @@ public class BotManagerServiceImpl implements BotManagerService {
             botInfoRepository.delete(info);
             botManagerActions.removeFromListener(info.getName());
         });
-
-        ThreadLocal<Integer> counter = new ThreadLocal<>();
-        Object obj;
     }
 
     @Override
